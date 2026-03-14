@@ -13,10 +13,11 @@ public class GameService {
 
     public void play() {
         GameState state = game.state();
-        System.out.println(game.getBoard());
+
         while (state == GameState.NOT_FINISHED) {
             game.clearScreen();
             System.out.println(game.getBoard());
+
             int firstCoordinate;
             int secondCoordinate;
             while (true) {
@@ -46,6 +47,8 @@ public class GameService {
             state = game.state();
             game.switchPlayer();
         }
+        game.clearScreen();
+        System.out.println(game.getBoard());
         if (state == GameState.DRAW) {
             System.out.println("It's a draw!");
         }
