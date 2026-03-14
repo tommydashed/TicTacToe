@@ -1,7 +1,7 @@
 package io.github.tommydashed.tictactoe;
 
 public class GameGrid {
-    private enum Cell {
+    enum Cell {
         EMPTY, X, O
     }
 
@@ -20,9 +20,18 @@ public class GameGrid {
     }
 
     public void fillGrid(String input) {
+        if (input.isEmpty()) {
+            return;
+        }
         for (int i = 0, k = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++, k++) {
-                grid[i][j] = Cell.valueOf(String.valueOf(input.charAt(k)));
+                char c = input.charAt(k);
+                switch (c) {
+                    case 'X' -> grid[i][j] = Cell.X;
+                    case 'O' -> grid[i][j] = Cell.O;
+                    case '_' -> grid[i][j] = Cell.EMPTY;
+                    default -> throw new IllegalArgumentException("Invalid input");
+                }
             }
         }
     }
@@ -111,6 +120,10 @@ public class GameGrid {
         for (int i = 0; i < 3; i++) {
             gridTxtBuilder.append("| ");
             for (int j = 0; j < 3; j++) {
+                if (grid[i][j] == Cell.EMPTY) {
+                    gridTxtBuilder.append("  ");
+                    continue;
+                }
                 gridTxtBuilder.append(grid[i][j]).append(" ");
             }
             gridTxtBuilder.append("|");
@@ -118,5 +131,11 @@ public class GameGrid {
         }
         gridTxtBuilder.append("-".repeat(9));
         return gridTxtBuilder.toString();
+    }
+    public Cell getCell(int row, int col) {
+        return grid[row][col];
+    }
+    public void setCell(int row, int col, Cell player) {
+        grid[row][col] = player == Cell.X ? Cell.X : Cell.O;
     }
 }
