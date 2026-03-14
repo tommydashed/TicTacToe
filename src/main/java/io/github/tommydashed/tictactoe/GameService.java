@@ -12,34 +12,49 @@ public class GameService {
     }
 
     public void play() {
-        String board = input.nextLine().strip().toUpperCase();
-        game.loadBoard(board);
         System.out.println(game.getBoard());
-        int firstCoordinate;
-        int secondCoordinate;
-        while (true) {
-            try {
-                firstCoordinate = input.nextInt();
-                secondCoordinate = input.nextInt();
-                if (firstCoordinate < 1 || firstCoordinate > 3 || secondCoordinate < 1 || secondCoordinate > 3) {
-                    throw new IllegalArgumentException();
+        GameState state = game.state();
+        while (state == GameState.NOT_FINISHED) {
+            int firstCoordinate;
+            int secondCoordinate;
+            while (true) {
+                try {
+                    firstCoordinate = input.nextInt();
+                    secondCoordinate = input.nextInt();
+                    if (firstCoordinate < 1 || firstCoordinate > 3 || secondCoordinate < 1 || secondCoordinate > 3) {
+                        throw new IllegalArgumentException();
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("You should enter numbers!");
+                    input.nextLine();
+                    continue;
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Coordinates should be from 1 to 3!");
+                    continue;
                 }
-            } catch (InputMismatchException e) {
-                System.out.println("You should enter numbers!");
-                input.nextLine();
-                continue;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Coordinates should be from 1 to 3!");
-                continue;
+                try {
+                    game.makeMove(firstCoordinate, secondCoordinate);
+                    System.out.println(game.getBoard());
+                } catch (IllegalArgumentException e) {
+                    System.out.println("This cell is occupied! Choose another one!");
+                    continue;
+                }
+                break;
             }
-            try {
-                game.makeMove(firstCoordinate, secondCoordinate);
-                System.out.println(game.getBoard());
-            } catch (IllegalArgumentException e) {
-                System.out.println("This cell is occupied! Choose another one!");
-                continue;
-            }
-            break;
+            state = game.state();
+            game.switchPlayer();
+        }
+        if (state == GameState.DRAW) {
+            System.out.println("It's a draw!");
+        }
+        else if (state == GameState.X_WIN) {
+            System.out.println("X wins!");
+        }
+        else if (state == GameState.O_WIN) {
+            System.out.println("O wins!");
+        }
+        else {
+            System.out.println("Impossible!");
         }
         input.close();
     }

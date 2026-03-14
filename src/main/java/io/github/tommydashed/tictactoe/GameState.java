@@ -1,4 +1,5 @@
 package io.github.tommydashed.tictactoe;
 
-public class GameState {
+public enum GameState {
+    DRAW, X_WIN, O_WIN, IMPOSSIBLE, NOT_FINISHED
 }

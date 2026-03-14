@@ -1,13 +1,6 @@
 package io.github.tommydashed.tictactoe;
 
 public class GameGrid {
-    enum Cell {
-        EMPTY, X, O
-    }
-
-    private enum GameState {
-        DRAW, X_WIN, O_WIN, IMPOSSIBLE, NOT_FINISHED
-    }
 
     private final Cell[][] grid;
 
@@ -19,24 +12,7 @@ public class GameGrid {
         };
     }
 
-    public void fillGrid(String input) {
-        if (input.isEmpty()) {
-            return;
-        }
-        for (int i = 0, k = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++, k++) {
-                char c = input.charAt(k);
-                switch (c) {
-                    case 'X' -> grid[i][j] = Cell.X;
-                    case 'O' -> grid[i][j] = Cell.O;
-                    case '_' -> grid[i][j] = Cell.EMPTY;
-                    default -> throw new IllegalArgumentException("Invalid input");
-                }
-            }
-        }
-    }
-
-    private GameState stateChecker() {
+    public GameState getState() {
         boolean x_win = false;
         boolean o_win = false;
         int colCount = 0;
@@ -100,17 +76,6 @@ public class GameGrid {
         } else {
             return GameState.NOT_FINISHED;
         }
-    }
-
-    public String getState() {
-        GameState state = stateChecker();
-        return switch (state) {
-            case IMPOSSIBLE -> "Impossible";
-            case X_WIN -> "X wins";
-            case O_WIN -> "O wins";
-            case DRAW -> "Draw";
-            case NOT_FINISHED -> "Game not Finished";
-        };
     }
 
     public String getGridTxt() {

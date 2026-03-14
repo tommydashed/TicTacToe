@@ -1,4 +1,5 @@
 package io.github.tommydashed.tictactoe;
 
-public class Cell {
+public enum Cell {
+    EMPTY, X, O
 }
