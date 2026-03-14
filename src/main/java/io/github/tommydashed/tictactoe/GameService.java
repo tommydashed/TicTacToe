@@ -12,9 +12,11 @@ public class GameService {
     }
 
     public void play() {
-        System.out.println(game.getBoard());
         GameState state = game.state();
+        System.out.println(game.getBoard());
         while (state == GameState.NOT_FINISHED) {
+            game.clearScreen();
+            System.out.println(game.getBoard());
             int firstCoordinate;
             int secondCoordinate;
             while (true) {

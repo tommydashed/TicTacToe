@@ -24,4 +24,8 @@ public class Game {
     public void switchPlayer() {
        currPlayer = currPlayer == Cell.X ? Cell.O : Cell.X;
     }
+    public void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
 }
