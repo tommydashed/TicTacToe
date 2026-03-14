@@ -9,19 +9,20 @@ public class GameGrid {
         DRAW, X_WIN, O_WIN, IMPOSSIBLE, NOT_FINISHED
     }
 
-    String[][] grid;
-    String state;
+    private final Cell[][] grid;
 
-    public GameGrid(String gridTxt) {
-        this.grid = new String[3][3];
-        gridGenerator(gridTxt);
-        setState();
+    public GameGrid() {
+        this.grid = new Cell[][]{
+                {Cell.EMPTY, Cell.EMPTY, Cell.EMPTY},
+                {Cell.EMPTY, Cell.EMPTY, Cell.EMPTY},
+                {Cell.EMPTY, Cell.EMPTY, Cell.EMPTY}
+        };
     }
 
-    private void gridGenerator(String gridTxt) {
+    public void fillGrid(String input) {
         for (int i = 0, k = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++, k++) {
-                grid[i][j] = String.valueOf(gridTxt.charAt(k));
+                grid[i][j] = Cell.valueOf(String.valueOf(input.charAt(k)));
             }
         }
     }
@@ -38,11 +39,11 @@ public class GameGrid {
         for (int i = 0; i < 3; i++) {
 
             for (int j = 0; j < 3; j++) {
-                colCount = grid[j][i].equals("X") ? colCount + 1
-                        : grid[j][i].equals("O") ? colCount - 1 : colCount;
-                rowCount = grid[i][j].equals("X") ? rowCount + 1
-                        : grid[i][j].equals("O") ? rowCount - 1 : rowCount;
-                emptyCount = grid[i][j].equals("_") ? emptyCount : emptyCount - 1;
+                colCount = grid[j][i] == Cell.X ? colCount + 1
+                        : grid[j][i] == Cell.O ? colCount - 1 : colCount;
+                rowCount = grid[i][j] == Cell.X ? rowCount + 1
+                        : grid[i][j] == Cell.O ? rowCount - 1 : rowCount;
+                emptyCount = grid[i][j] == Cell.EMPTY ? emptyCount : emptyCount - 1;
                 if (rowCount == 3) {
                     x_win = true;
                 }
@@ -62,16 +63,16 @@ public class GameGrid {
 
         }
         for (int i = 0, j = 2; i < 3 && j >= 0; i++, j--) {
-            diagCount = grid[i][i].equals("X") ? diagCount + 1
-                    : grid[i][i].equals("O") ? diagCount - 1 : diagCount;
+            diagCount = grid[i][i] == Cell.X ? diagCount + 1
+                    : grid[i][i] == Cell.O ? diagCount - 1 : diagCount;
             if (diagCount == 3) {
                 x_win = true;
             }
             if (diagCount == -3) {
                 o_win = true;
             }
-            antiDiagCount = grid[i][j].equals("X") ? antiDiagCount + 1
-                    : grid[i][j].equals("O") ? antiDiagCount - 1 : antiDiagCount;
+            antiDiagCount = grid[i][j] == Cell.X ? antiDiagCount + 1
+                    : grid[i][j] == Cell.O ? antiDiagCount - 1 : antiDiagCount;
             if (antiDiagCount == 3) {
                 x_win = true;
             }
@@ -91,14 +92,31 @@ public class GameGrid {
             return GameState.NOT_FINISHED;
         }
     }
-    private void setState() {
-        this.state = switch(stateChecker()) {
-            case GameState.IMPOSSIBLE -> "Impossible";
-            case GameState.X_WIN -> "X wins";
-            case GameState.O_WIN -> "O wins";
-            case GameState.DRAW -> "Draw";
-            case GameState.NOT_FINISHED -> "Game not finished";
+
+    public String getState() {
+        GameState state = stateChecker();
+        return switch (state) {
+            case IMPOSSIBLE -> "Impossible";
+            case X_WIN -> "X wins";
+            case O_WIN -> "O wins";
+            case DRAW -> "Draw";
+            case NOT_FINISHED -> "Game not Finished";
         };
     }
-}
 
+    public String getGridTxt() {
+        StringBuilder gridTxtBuilder = new StringBuilder();
+        gridTxtBuilder.append("-".repeat(9));
+        gridTxtBuilder.append('\n');
+        for (int i = 0; i < 3; i++) {
+            gridTxtBuilder.append("| ");
+            for (int j = 0; j < 3; j++) {
+                gridTxtBuilder.append(grid[i][j]).append(" ");
+            }
+            gridTxtBuilder.append("|");
+            gridTxtBuilder.append('\n');
+        }
+        gridTxtBuilder.append("-".repeat(9));
+        return gridTxtBuilder.toString();
+    }
+}
