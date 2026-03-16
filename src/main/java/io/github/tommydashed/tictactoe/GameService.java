@@ -12,9 +12,8 @@ public class GameService {
     }
 
     public void play() {
-        GameState state = game.state();
 
-        while (state == GameState.NOT_FINISHED) {
+        while (true) {
             game.clearScreen();
             System.out.println(game.getBoard());
 
@@ -44,18 +43,17 @@ public class GameService {
                 }
                 break;
             }
-            state = game.state();
-            game.switchPlayer();
+
         }
         game.clearScreen();
         System.out.println(game.getBoard());
-        if (state == GameState.DRAW) {
+        if (state == GridState.DRAW) {
             System.out.println("It's a draw!");
         }
-        else if (state == GameState.X_WIN) {
+        else if (state == GridState.X_WIN) {
             System.out.println("X wins!");
         }
-        else if (state == GameState.O_WIN) {
+        else if (state == GridState.O_WIN) {
             System.out.println("O wins!");
         }
         else {

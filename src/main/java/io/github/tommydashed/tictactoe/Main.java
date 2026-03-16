@@ -4,7 +4,7 @@ public class Main {
 
 
     public static void main(String[] args) {
-        GameGrid grid = new GameGrid();
+        Grid grid = new Grid();
         Game game = new Game(grid);
         GameService gameservice = new GameService(game);
         gameservice.play();

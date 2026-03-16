@@ -1,18 +1,29 @@
 package io.github.tommydashed.tictactoe;
 
-public class GameGrid {
+import java.util.Arrays;
 
-    private final Cell[][] grid;
+public class Grid {
 
-    public GameGrid() {
-        this.grid = new Cell[][]{
-                {Cell.EMPTY, Cell.EMPTY, Cell.EMPTY},
-                {Cell.EMPTY, Cell.EMPTY, Cell.EMPTY},
-                {Cell.EMPTY, Cell.EMPTY, Cell.EMPTY}
-        };
+    private enum GridState {
+        DRAW, X_WIN, O_WIN, IMPOSSIBLE, NOT_FINISHED
     }
 
-    public GameState getState() {
+    public enum Cell {
+        EMPTY, X, O
+    }
+
+    private final Cell[][] grid;
+    private Cell player = Cell.X;
+
+    public Grid() {
+        int size = 3;
+        grid = new Cell[size][size];
+       for (Cell[] row : grid) {
+           Arrays.fill(row, Cell.EMPTY);
+       }
+    }
+
+    private GridState getState() {
         boolean x_win = false;
         boolean o_win = false;
         int colCount = 0;
@@ -20,7 +31,6 @@ public class GameGrid {
         int diagCount = 0;
         int antiDiagCount = 0;
         int totalCount = 0;
-        int emptyCount = 9;
         for (int i = 0; i < 3; i++) {
 
             for (int j = 0; j < 3; j++) {
@@ -28,7 +38,6 @@ public class GameGrid {
                         : grid[j][i] == Cell.O ? colCount - 1 : colCount;
                 rowCount = grid[i][j] == Cell.X ? rowCount + 1
                         : grid[i][j] == Cell.O ? rowCount - 1 : rowCount;
-                emptyCount = grid[i][j] == Cell.EMPTY ? emptyCount : emptyCount - 1;
                 if (rowCount == 3) {
                     x_win = true;
                 }
@@ -66,15 +75,15 @@ public class GameGrid {
             }
         }
         if ((x_win && o_win) || (totalCount < -1 || totalCount > 1)) {
-            return GameState.IMPOSSIBLE;
+            return GridState.IMPOSSIBLE;
         } else if (x_win) {
-            return GameState.X_WIN;
+            return GridState.X_WIN;
         } else if (o_win) {
-            return GameState.O_WIN;
-        } else if (emptyCount == 0) {
-            return GameState.DRAW;
+            return GridState.O_WIN;
+        } else if (isGridEmpty()) {
+            return GridState.DRAW;
         } else {
-            return GameState.NOT_FINISHED;
+            return GridState.NOT_FINISHED;
         }
     }
 
@@ -97,10 +106,35 @@ public class GameGrid {
         gridTxtBuilder.append("-".repeat(9));
         return gridTxtBuilder.toString();
     }
-    public Cell getCell(int row, int col) {
-        return grid[row][col];
-    }
-    public void setCell(int row, int col, Cell player) {
+
+    private void setCell(int row, int col, Cell player) {
         grid[row][col] = player == Cell.X ? Cell.X : Cell.O;
+    }
+    public boolean isCellEmpty(int row, int col) {
+        return grid[row][col] != Cell.EMPTY;
+    }
+    public boolean isGridEmpty() {
+        boolean empty = true;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (!isCellEmpty(i, j)) {
+                    empty = false;
+                }
+            }
+        }
+        return empty;
+    }
+    public void switchPlayer() {
+        player = player == Cell.X ? Cell.O : Cell.X;
+    }
+    public void attemptMove(int row, int col) {
+        if (!isCellEmpty(row, col)) {
+            setCell(row, col, player);
+            switchPlayer();
+        }
+        else {
+            throw new IllegalArgumentException();
+        }
+        getState();
     }
 }
