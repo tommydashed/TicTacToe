@@ -2,10 +2,10 @@ package io.github.tommydashed.tictactoe.core;
 
 
 public class Game {
-   private final Grid grid;
+    private final Grid grid;
 
-   public Game(Grid grid) {
-        this.grid = grid;
+    public Game() {
+        this.grid = new Grid();
     }
 
     public void makeMove(int row, int col) {
@@ -25,7 +25,25 @@ public class Game {
     public boolean isFinished() {
         return grid.gameFinished();
     }
-    protected boolean result() {
-        return grid.xWin() || grid.oWin() || grid.draw();
+    private boolean isDraw() {
+        return grid.result() == Grid.GridState.DRAW;
+    }
+    private boolean isXWin() {
+        return grid.result() == Grid.GridState.X_WIN;
+    }
+    private boolean isOWin() {
+        return grid.result() == Grid.GridState.O_WIN;
+    }
+    public String result() {
+        if (isDraw()) {
+            return "It's a draw!";
+        }
+        if (isXWin()) {
+            return "X wins!";
+        }
+        if (isOWin()) {
+            return "O wins!";
+        }
+        return "Game not finished yet.";
     }
 }

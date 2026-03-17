@@ -1,8 +1,6 @@
 package io.github.tommydashed.tictactoe.cli;
 import io.github.tommydashed.tictactoe.core.Game;
 
-import java.util.InputMismatchException;
-
 public class Play {
     private final Game game;
     private final OutputHandler output;
@@ -15,6 +13,14 @@ public class Play {
     }
 
     public void start() {
-
+        while (!game.isFinished()) {
+            game.clearScreen();
+            output.showBoard(game.render());
+            game.makeMove(input.readInt(), input.readInt());
+        }
+        game.clearScreen();
+        output.showBoard(game.render());
+        output.showResult(game.result());
     }
+
 }

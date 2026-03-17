@@ -13,6 +13,7 @@ public class Grid {
     }
 
     private final Cell[][] grid;
+    private final int size = 3;
 
     public Grid() {
         int size = 3;
@@ -21,36 +22,8 @@ public class Grid {
            Arrays.fill(row, Cell.EMPTY);
        }
     }
-    private Cell currentPlayer () {
-        int xCount = 0;
-        int oCount = 0;
-        for (Cell[] row : grid) {
-            for (Cell col : row) {
-                if (col == Cell.X) {
-                    xCount++;
-                } else if (col == Cell.O) {
-                    oCount++;
-                }
-            }
-        }
-       return xCount == oCount ? Cell.X : Cell.O;
-    }
-    private Cell lastPlayer() {
-        return currentPlayer() == Cell.X ? Cell.O : Cell.X;
-    }
 
-    private GridState state(Cell player) {
-        if (isRowWin(player) || isColWin(player) || isDiagonalWin(player) || isAntiDiagonalWin(player)) {
-            return winFor(player);
-        }
-        if (gridHasEmpty()) {
-            return GridState.NOT_FINISHED;
-        }
-        return GridState.DRAW;
-    }
-    public
-
-    String renderedGrid() {
+    public String renderedGrid() {
         StringBuilder gridBuilder = new StringBuilder();
         gridBuilder.append("-".repeat(9));
         gridBuilder.append('\n');
@@ -69,20 +42,18 @@ public class Grid {
         gridBuilder.append("-".repeat(9));
         return gridBuilder.toString();
     }
-    private GridState winFor(Cell player) {
-        return player == Cell.X ? GridState.X_WIN : GridState.O_WIN;
-    }
+
     private void setCell(int row, int col, Cell player) {
         grid[row][col] = player == Cell.X ? Cell.X : Cell.O;
     }
-    public boolean isCellEmpty(int row, int col) {
+    public boolean cellIsEmpty(int row, int col) {
         return grid[row][col] == Cell.EMPTY;
     }
     public boolean gridHasEmpty() {
         boolean empty = false;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (isCellEmpty(i, j)) {
+                if (cellIsEmpty(i, j)) {
                     empty = true;
                     break;
                 }
@@ -90,17 +61,24 @@ public class Grid {
         }
         return empty;
     }
-
-    public void attemptMove(int row, int col) {
-        if (isCellEmpty(row, col)) {
-            setCell(row, col, currentPlayer());
+    private Cell currentPlayer () {
+        int xCount = 0;
+        int oCount = 0;
+        for (Cell[] row : grid) {
+            for (Cell col : row) {
+                if (col == Cell.X) {
+                    xCount++;
+                } else if (col == Cell.O) {
+                    oCount++;
+                }
+            }
         }
-        else {
-            throw new IllegalArgumentException();
-        }
+       return xCount == oCount ? Cell.X : Cell.O;
+    }
+    private Cell lastPlayer() {
+        return currentPlayer() == Cell.X ? Cell.O : Cell.X;
     }
     private boolean isDiagonalWin(Cell player) {
-        int size = grid.length;
         int diagCount = 0;
         for (int i = 0; i < size; i++) {
             diagCount = grid[i][i] == player ? diagCount + 1 : diagCount;
@@ -108,7 +86,6 @@ public class Grid {
         return diagCount == size;
     }
     private boolean isAntiDiagonalWin(Cell player) {
-        int size = grid.length;
         int antiDiagCount = 0;
         for (int i = 0, j = (size - 1); i < size && j >=0; i++, j--)
             antiDiagCount = grid[i][j] == player ? antiDiagCount + 1 : antiDiagCount;
@@ -130,5 +107,33 @@ public class Grid {
             }
         }
         return false;
+    }
+    private GridState winFor(Cell player) {
+        return player == Cell.X ? GridState.X_WIN : GridState.O_WIN;
+    }
+    private GridState state(Cell player) {
+        if (isRowWin(player) || isColWin(player) || isDiagonalWin(player) || isAntiDiagonalWin(player)) {
+            return winFor(player);
+        }
+        if (gridHasEmpty()) {
+            return GridState.NOT_FINISHED;
+        }
+        return GridState.DRAW;
+    }
+
+    public void attemptMove(int row, int col) {
+        if (cellIsEmpty(row, col)) {
+            setCell(row, col, currentPlayer());
+        }
+        else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public boolean gameFinished() {
+        return state(lastPlayer()) != GridState.NOT_FINISHED;
+    }
+    GridState result() {
+        return state(lastPlayer());
     }
 }
