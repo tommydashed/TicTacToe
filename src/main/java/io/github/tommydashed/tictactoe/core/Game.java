@@ -1,4 +1,4 @@
-package io.github.tommydashed.tictactoe;
+package io.github.tommydashed.tictactoe.core;
 
 
 public class Game {
@@ -7,9 +7,7 @@ public class Game {
    public Game(Grid grid) {
         this.grid = grid;
     }
-    public String getBoard() {
-        return grid.getGridTxt();
-    }
+
     public void makeMove(int row, int col) {
        try {
            grid.attemptMove(row - 1, col - 1);
@@ -17,8 +15,17 @@ public class Game {
            throw new IllegalArgumentException("Move cannot be made on an occupied cell.");
        }
     }
+    public String render() {
+        return grid.renderedGrid();
+    }
     public void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+    public boolean isFinished() {
+        return grid.gameFinished();
+    }
+    protected boolean result() {
+        return grid.xWin() || grid.oWin() || grid.draw();
     }
 }
