@@ -15,7 +15,7 @@ public class TicTacToe {
 
     public void start() {
         while (!game.isFinished()) {
-            game.clearScreen();
+            output.clearScreen();
             output.showBoard(game.render());
             try {
                 game.makeMove(input.readInt(), input.readInt());
@@ -23,7 +23,7 @@ public class TicTacToe {
                 output.showInvalidMove();
             }
         }
-        game.clearScreen();
+        output.clearScreen();
         output.showBoard(game.render());
         output.showResult(game.result());
     }

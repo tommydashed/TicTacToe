@@ -22,4 +22,8 @@ public class OutputHandler {
     public void draw() {
         System.out.println("It's a draw!");
     }
+    public void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
 }

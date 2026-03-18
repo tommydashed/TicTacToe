@@ -18,10 +18,7 @@ public class Game {
     public String render() {
         return grid.renderedGrid();
     }
-    public void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
+
     public boolean isFinished() {
         return grid.gameFinished();
     }
