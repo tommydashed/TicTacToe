@@ -5,7 +5,7 @@ public class Game {
     private final Grid grid;
 
     public Game() {
-        this.grid = new Grid();
+        this.grid = new Grid(3);
     }
 
     public void makeMove(int row, int col) {

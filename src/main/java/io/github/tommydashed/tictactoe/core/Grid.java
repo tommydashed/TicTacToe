@@ -13,10 +13,10 @@ public class Grid {
     }
 
     private final Cell[][] grid;
-    private final int size = 3;
+    private final int size;
 
-    public Grid() {
-        int size = 3;
+    public Grid(int size) {
+        this.size = size;
         grid = new Cell[size][size];
        for (Cell[] row : grid) {
            Arrays.fill(row, Cell.EMPTY);
@@ -27,9 +27,9 @@ public class Grid {
         StringBuilder gridBuilder = new StringBuilder();
         gridBuilder.append("-".repeat(9));
         gridBuilder.append('\n');
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < size; i++) {
             gridBuilder.append("| ");
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < size; j++) {
                 if (grid[i][j] == Cell.EMPTY) {
                     gridBuilder.append("  ");
                     continue;
@@ -39,7 +39,7 @@ public class Grid {
             gridBuilder.append("|");
             gridBuilder.append('\n');
         }
-        gridBuilder.append("-".repeat(9));
+        gridBuilder.append("-".repeat(size * 3));
         return gridBuilder.toString();
     }
 
@@ -92,7 +92,8 @@ public class Grid {
         return antiDiagCount == size;
     }
     private boolean isRowWin(Cell player) {
-        Cell[] check = new Cell[]{player, player, player};
+        Cell[] check = new Cell[size];
+        Arrays.fill(check, player);
         for (Cell[] row : grid) {
             if (Arrays.equals(row, check)) {
                 return true;
@@ -129,12 +130,15 @@ public class Grid {
         return GridState.DRAW;
     }
 
-    public void attemptMove(int row, int col) {
-        if (cellIsEmpty(row, col)) {
-            setCell(row, col, currentPlayer());
+    public void attemptMove(int row, int col) throws InvalidMoveException{
+        if (row < 0 || row > 2 || col < 0 || col > 2) {
+            throw new OutOfBoundsException("Invalid move. Move must be between 1 and 3.");
+        }
+        else if (!cellIsEmpty(row, col)) {
+            throw new CellOccupiedException("Cell is already occupied.");
         }
         else {
-            throw new IllegalArgumentException();
+            setCell(row, col, currentPlayer());
         }
     }
 
