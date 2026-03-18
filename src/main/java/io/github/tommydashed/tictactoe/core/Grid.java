@@ -25,7 +25,7 @@ public class Grid {
 
     public String renderedGrid() {
         StringBuilder gridBuilder = new StringBuilder();
-        gridBuilder.append("-".repeat(9));
+        gridBuilder.append("-".repeat(size * 3));
         gridBuilder.append('\n');
         for (int i = 0; i < size; i++) {
             gridBuilder.append("| ");
@@ -51,8 +51,8 @@ public class Grid {
     }
     public boolean gridHasEmpty() {
         boolean empty = false;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 if (cellIsEmpty(i, j)) {
                     empty = true;
                     break;
@@ -131,7 +131,7 @@ public class Grid {
     }
 
     public void attemptMove(int row, int col) throws InvalidMoveException{
-        if (row < 0 || row > 2 || col < 0 || col > 2) {
+        if (row < 0 || row > size - 1 || col < 0 || col > size - 1) {
             throw new OutOfBoundsException("Invalid move. Move must be between 1 and 3.");
         }
         else if (!cellIsEmpty(row, col)) {
