@@ -101,12 +101,20 @@ public class Grid {
         return false;
     }
     private boolean isColWin(Cell player) {
-        for (Cell[] cells : grid) {
-            if (cells[0] == player && cells[1] == player && cells[2] == player) {
-                return true;
+        boolean isWin = false;
+        for (int i = 0; i < size; i++) {
+            isWin = true;
+            for (int j = 0; j < size; j++) {
+                if (grid[j][i] != player) {
+                    isWin = false;
+                    break;
+                }
             }
-        }
-        return false;
+            if (isWin) {
+                break;
+            }
+       }
+        return isWin;
     }
     private GridState winFor(Cell player) {
         return player == Cell.X ? GridState.X_WIN : GridState.O_WIN;

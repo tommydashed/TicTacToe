@@ -11,8 +11,8 @@ public class Main {
         Game game = new Game();
         OutputHandler output = new OutputHandler();
         InputHandler input = new InputHandler();
-        TicTacToe play = new TicTacToe(game, output, input);
-        play.start();
+        TicTacToe ticTacToe = new TicTacToe(game, output, input);
+        ticTacToe.start();
 
     }
 }

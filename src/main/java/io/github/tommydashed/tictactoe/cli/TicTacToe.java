@@ -1,5 +1,6 @@
 package io.github.tommydashed.tictactoe.cli;
 import io.github.tommydashed.tictactoe.core.Game;
+import io.github.tommydashed.tictactoe.core.InvalidMoveException;
 
 public class TicTacToe {
     private final Game game;
@@ -16,7 +17,11 @@ public class TicTacToe {
         while (!game.isFinished()) {
             game.clearScreen();
             output.showBoard(game.render());
-            game.makeMove(input.readInt(), input.readInt());
+            try {
+                game.makeMove(input.readInt(), input.readInt());
+            }catch (InvalidMoveException e) {
+                output.showInvalidMove();
+            }
         }
         game.clearScreen();
         output.showBoard(game.render());
