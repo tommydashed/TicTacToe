@@ -11,8 +11,10 @@ public class Game {
     public void makeMove(int row, int col) {
        try {
            grid.attemptMove(row - 1, col - 1);
-       } catch (IllegalArgumentException e) {
-           throw new IllegalArgumentException("Move cannot be made on an occupied cell.");
+       } catch (OutOfBoundsException e) {
+           throw new OutOfBoundsException("Move cannot be made out of bounds.");
+       } catch (CellOccupiedException e) {
+           throw new CellOccupiedException("Cell is already occupied.");
        }
     }
     public String render() {
