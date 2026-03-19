@@ -1,5 +1,9 @@
 package io.github.tommydashed.tictactoe.cli;
 
+import io.github.tommydashed.tictactoe.core.CellOccupiedException;
+import io.github.tommydashed.tictactoe.core.InvalidMoveException;
+import io.github.tommydashed.tictactoe.core.OutOfBoundsException;
+
 public class OutputHandler {
     public void print(String message) {
         System.out.println(message);
@@ -10,17 +14,23 @@ public class OutputHandler {
     public void showResult(String result) {
         System.out.println(result);
     }
-    public void showInvalidMove() {
-        System.out.println("Invalid move. Try again.");
+    public void showInvalidMove(InvalidMoveException e) {
+        System.out.println(e.getUserMessage());
     }
-    public void xWin() {
-        System.out.println("X wins!");
+    public void showInvalidInput() {
+        System.out.println("Invalid input. Must be a number between 1 and 3.");
     }
-    public void oWin() {
-        System.out.println("O wins!");
+    public static String xWin() {
+        return "X wins!";
     }
-    public void draw() {
-        System.out.println("It's a draw!");
+    public static String oWin() {
+        return "O wins!";
+    }
+    public static String draw() {
+       return "It's a draw!";
+    }
+    public static String notFinished() {
+        return "Game not finished.";
     }
     public void clearScreen() {
         System.out.print("\033[H\033[2J");

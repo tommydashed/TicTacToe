@@ -1,7 +1,8 @@
 package io.github.tommydashed.tictactoe.core;
 
 public class CellOccupiedException extends InvalidMoveException{
-    public CellOccupiedException(String message) {
-        super(message);
+    @Override
+    public String getUserMessage() {
+        return "Invalid move. Cell is already occupied.";
     }
 }

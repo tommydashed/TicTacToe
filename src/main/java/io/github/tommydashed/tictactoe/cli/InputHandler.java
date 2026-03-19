@@ -9,7 +9,7 @@ public class InputHandler {
         scanner = new Scanner(System.in);
     }
 
-    public int readInt() {
+    public int readInt() throws NumberFormatException {
         return Integer.parseInt(scanner.next());
     }
 }

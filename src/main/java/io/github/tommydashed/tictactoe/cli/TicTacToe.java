@@ -1,6 +1,8 @@
 package io.github.tommydashed.tictactoe.cli;
+import io.github.tommydashed.tictactoe.core.CellOccupiedException;
 import io.github.tommydashed.tictactoe.core.Game;
 import io.github.tommydashed.tictactoe.core.InvalidMoveException;
+import io.github.tommydashed.tictactoe.core.OutOfBoundsException;
 
 public class TicTacToe {
     private final Game game;
@@ -20,7 +22,9 @@ public class TicTacToe {
             try {
                 game.makeMove(input.readInt(), input.readInt());
             }catch (InvalidMoveException e) {
-                output.showInvalidMove();
+                output.showInvalidMove(e);
+            } catch (NumberFormatException e) {
+                output.showInvalidInput();
             }
         }
         output.clearScreen();

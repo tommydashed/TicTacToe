@@ -132,10 +132,10 @@ public class Grid {
 
     public void attemptMove(int row, int col) throws InvalidMoveException{
         if (row < 0 || row > size - 1 || col < 0 || col > size - 1) {
-            throw new OutOfBoundsException("Invalid move. Move must be between 1 and 3.");
+            throw new OutOfBoundsException();
         }
         else if (!cellIsEmpty(row, col)) {
-            throw new CellOccupiedException("Cell is already occupied.");
+            throw new CellOccupiedException();
         }
         else {
             setCell(row, col, currentPlayer());
