@@ -1,8 +1,6 @@
 package io.github.tommydashed.tictactoe.cli;
 
-import io.github.tommydashed.tictactoe.core.CellOccupiedException;
 import io.github.tommydashed.tictactoe.core.InvalidMoveException;
-import io.github.tommydashed.tictactoe.core.OutOfBoundsException;
 
 public class OutputHandler {
     public void print(String message) {

@@ -10,8 +10,8 @@ public class Game {
         this.grid = new Grid(3);
     }
 
-    public void makeMove(int row, int col) throws InvalidMoveException {
-        grid.attemptMove(row - 1, col - 1);
+    public void makeMove(Move move) throws InvalidMoveException {
+        grid.attemptMove(move.row(), move.col());
     }
     public String render() {
         return grid.renderedGrid();
